@@ -9,9 +9,9 @@ export const TOOL_DEFS = [
   {id:'plesk',name:'Plesk',color:0x4f7368,asset:'plesk.svg',note:'Web hosting and server administration.'},
   {id:'csharp',name:'C#',color:0x765b85,note:'Unity development and game systems.'},
   {id:'git',name:'Git',color:0xb86a4b,asset:'git.svg',kind:'hex',note:'Version control across projects.'},
-  {id:'githubactions',name:'GitHub Actions',color:0x547a98,asset:'githubactions.svg',note:'Build and deployment workflows, including this portfolio.'},
-  {id:'vite',name:'Vite',color:0x746687,asset:'vite.svg',note:'Local development and production builds for this portfolio.'},
-  {id:'npm',name:'npm',color:0x9b5350,asset:'npm.svg',note:'Dependencies and project scripts, including this portfolio.'},
+  {id:'githubactions',name:'GitHub Actions',color:0x547a98,asset:'githubactions.svg',note:'Build and deployment workflows.'},
+  {id:'vite',name:'Vite',color:0x746687,asset:'vite.svg',note:'Web development and production builds.'},
+  {id:'npm',name:'npm',color:0x9b5350,asset:'npm.svg',note:'Dependencies and project scripts.'},
 ];
 
 function tray(api,parent,width,depth,height,position,color){

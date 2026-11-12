@@ -15,3 +15,7 @@ The user confirmed that GGJG involvement is in the past and that Shosho and Wint
 - This repository verifies Git, GitHub Actions, Vite and npm through its Git metadata, `.github/workflows/deploy.yml` and `package.json`. No Docker or Kubernetes usage was inferred from unsuccessful connected searches.
 - Svelte, Python, Plesk, Git, GitHub Actions, Vite and npm SVG silhouettes: https://github.com/simple-icons/simple-icons/tree/develop/icons — downloaded from the matching lowercase SVG filenames on 12 November 2026. SVG fills adapted for contrast.
 - Unity uses the existing portfolio asset. Azure and C# use drawn marks. Codex uses a drawn terminal symbol, rather than a claimed official Codex logo.
+
+## Interaction audio
+
+`public/audio/duck-quack.mp3`: public HQ preview of “Cartoon - Duck Quack” by Breviceps, Freesound #445960, CC0. Source: https://freesound.org/people/Breviceps/sounds/445960/ . Preview: https://cdn.freesound.org/previews/445/445960_9159316-hq.mp3 . Retrieved 13 November 2026. Served locally. Other cues are short, original Web Audio tones and noise envelopes. Audio starts only after an interaction; room options mute existing and pending playback.

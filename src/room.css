@@ -51,3 +51,11 @@ html{scroll-padding-top:24px}
 @media(pointer:coarse){#drag-mode{display:block}}
 @media(max-width:700px){.portfolio-section{margin:30px 22px 0;padding-top:30px}.work-evidence,.about-room{grid-template-columns:1fr;gap:26px}.story-index{grid-template-columns:1fr;gap:24px}.room-entry{inset:auto 14px 12px;padding:12px;gap:10px;flex-direction:column}.room-entry p{font-size:11px}.room-poster{object-fit:contain}#drag-mode{display:block}.review-controls{max-width:none;justify-content:start;gap:8px 20px}.review-controls button{min-height:44px;font-size:12px}.stage-footer p{max-width:none;flex-basis:100%}.intro nav a{min-height:44px;display:inline-flex;align-items:center}.contact-links a{min-height:44px;display:inline-flex;align-items:center}summary{max-width:100%;line-height:1.6;min-height:44px;align-content:center}.page-footer{line-height:1.8}}
 @media(max-width:700px){.review-controls{flex:1 1 100%;min-width:0;max-width:100%;justify-content:flex-start}.stage-footer p{min-width:0}.contact-email{overflow-wrap:anywhere}}
+
+/* Quiet controls and a readable fallback, without a duplicate room walkthrough. */
+.story{grid-template-columns:1fr;min-height:0;padding-bottom:24px}
+.room-options{border:0;padding:0;flex:0 1 auto}
+.room-options summary{font-size:12px;margin-left:auto}
+.room-options .review-controls{padding-top:8px;gap:20px}
+.room-fallback h2{font-size:25px;font-weight:400;margin:0}
+@media(max-width:700px){.room-options{flex-basis:100%}.room-options summary{margin-left:0}.room-options .review-controls{justify-content:flex-start}}

@@ -1,3 +1,4 @@
+import { createRoomAudio } from './room-audio.js';
 import * as THREE from 'three';
 import { createRoomProps, updateRoomProps, plantAction, toggleDevice, spillTools } from './room-props.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -28,7 +29,7 @@ const textures = new Set(), materials = new Set();
 function dispose() {
   if (disposed) return;
   disposed = true; clearTimeout(bookTimer); loop?.dispose(); events.abort();
-  resizeObserver?.disconnect(); viewObserver?.disconnect(); audio?.close().catch(() => {});
+  resizeObserver?.disconnect(); viewObserver?.disconnect(); audio.dispose();
   const geometry = new Set();
   scene?.traverse(node => {
     if (node.geometry) geometry.add(node.geometry);
@@ -44,7 +45,7 @@ function dispose() {
 }
 
 const stories = {
-  portal: ['Through the portal', 'My work at Wintor began with Unity development and experience design. I help connect museum stories with visitors through AR and location-based experiences. The view here is an existing photograph of Wintor at Portlantis.', [['Wintor', '/work/wintor/'], ['Amsterdam in Motion', '/work/amsterdam-in-motion/'], ['Marinemuseum', '/work/marinemuseum/']]],
+  portal: ['Through the portal', 'My work at Wintor began with Unity development and experience design. I help connect museum stories with visitors through AR and location-based experiences. The portal looks out onto Portlantis, one of the places where these experiences come to life.', [['Wintor', '/work/wintor/'], ['Amsterdam in Motion', '/work/amsterdam-in-motion/'], ['Marinemuseum', '/work/marinemuseum/']]],
   server: ['Behind the experience', 'From early 2026, my work at Wintor expanded into backend and web development, live production analytics, support, and infrastructure. I’m continuing to learn Azure alongside this work.', [['Explore Wintor', '/work/wintor/']]],
   carpet: ['A little piece of home', 'I’m from Iran. A Persian carpet belongs in this room. Move the carpet to find a few keepsakes from earlier chapters.', []],
   laptop: ['A toolkit that keeps growing', 'My background is in games and Unity. Today I also work across web and backend systems. Unity and C# belong in my toolkit; Azure is part of my ongoing learning.', []],
@@ -52,10 +53,10 @@ const stories = {
   desktop: ['The workbench', 'A place for building, trying, and making things work. Click the computer again to restart it.', []],
   duck: ['A patient listener', 'Some problems make more sense when you explain them to a duck.', []],
   headset: ['Another reality', 'VR is part of my ongoing exploration. A small shift in perspective can change the whole room.', []],
-  phone: ['A small screen', 'Click to wake the phone, and click again to let it sleep.', []],
-  tablet: ['Another way to explore', 'Click to turn the tablet screen on or off.', []],
-  plant: ['A little care', 'Click the leaves to let one go. Click the pot to grow them back.', []],
-  plant2: ['Room to grow', 'Click the leaves to let one go. Click the pot to grow them back.', []],
+  phone: ['A small screen', 'I help bring location-based AR experiences to visitors on mobile devices.', []],
+  tablet: ['Another way to explore', 'Interactive stories can travel with visitors, from museum galleries to the world outside.', []],
+  plant: ['A little care', 'A quiet reminder to keep growing.', []],
+  plant2: ['Room to grow', 'A quiet reminder to keep growing.', []],
   toolbox: ['A toolkit that keeps growing', 'Svelte, Azure, Unity, Codex, Python, Plesk, C#, Git, GitHub Actions, Vite, and npm. Open the trays and see what spills out.', []],
   chair: ['Take a seat', 'A small turn, a different view.', []],
   shosho: ['Shosho', 'One of my current work connections: Shosho, working across film, animation, interaction, and design.', [['Visit Shosho', 'https://www.shosho.nl/']]],
@@ -71,7 +72,8 @@ ray.params.Line.threshold = .025;
 let portalPhoto, bookTimer;
 let props, composer, glitchPass, portalInner, closedWave, serverLight, portalLight, laptopScreen, laptopLight;
 let portalOpen = false, portalAmount = 0, serverBoot = -Infinity, laptopBoot = -Infinity, desktopBoot = -Infinity;
-let soundEnabled = true, audio, clothSim;
+let soundEnabled = true, clothSim;
+const audio = createRoomAudio();
 const dragPlane = new THREE.Plane(new THREE.Vector3(0,1,0),-.06), dragPoint = new THREE.Vector3(), dragOffset = new THREE.Vector3();
 let lastRevealCheck = -10;
 const projectIcons = [];
@@ -238,7 +240,7 @@ function build() {
   for (const id of ['shosho', 'wintor']) { objects.get(id).discovered = true; objects.get(id).amount = 1; }
   const toolList=document.querySelector('#tool-list');
   props.tokens.forEach(token=>{const button=document.createElement('button');button.textContent=token.name;on(button, 'click',()=>{showTool(token);document.querySelector('#story-title').focus();});toolList.append(button);});
-  updateCount();
+
 }
 
 // Batch only rigid siblings. Animated meshes, props, hit parts, and parent groups retain their identity.
@@ -275,6 +277,7 @@ function batchRigidMeshes() {
 }
 
 function showStory(id) {
+  document.querySelector('#room-story').hidden=false;
   wake(5);
   const entry = objects.get(id); if (entry) entry.discovered = true; selected = id;
 
@@ -284,16 +287,17 @@ function showStory(id) {
   for (const [label, url] of stories[id][2]) { const a = document.createElement('a'); a.textContent = label; a.href = url; actions.append(a); }
   if (id === 'carpet') {
     for (const [label,dx,dz] of [['Slide left',-.85,0],['Slide right',.85,0],['Slide back',0,-1],['Slide forward',0,1]]) {
-      const b=document.createElement('button');b.textContent=label;on(b, 'click',()=>{nudgeCloth(clothSim,dx,dz);wake(5);});actions.append(b);
+      const b=document.createElement('button');b.textContent=label;on(b, 'click',()=>{audio.play('cloth');nudgeCloth(clothSim,dx,dz);wake(5);});actions.append(b);
     }
     const reset=document.createElement('button');reset.textContent='Lay carpet flat';on(reset, 'click',()=>{resetCloth(clothSim);wake(.4);});actions.append(reset);
   }
   if (id === 'book') { const turn = document.createElement('button'); turn.textContent = 'Open contact'; on(turn, 'click', turnNotebook); actions.prepend(turn); }
 
   hint.textContent = id === 'carpet' ? 'Grab anywhere on the carpet and drag it across the floor. Let go to let it settle.' : 'Discovered. Move over the object to see it come to life.';
-  updateCount();
+
 }
 function showTool(token){
+  document.querySelector('#room-story').hidden=false;
   wake(5);
   document.querySelector('#story-title').textContent=token.name;
   document.querySelector('#story-text').textContent=token.note+' Drag the icon to pick it up; drop it over an open tray to put it back.';
@@ -301,12 +305,12 @@ function showTool(token){
   const put=document.createElement('button');put.textContent='Put in toolbox';
   on(put, 'click',()=>{
     wake(5);if(!props.toolboxOpen)spillTools(props,elapsed);
-    token.group.visible=true;packTool(props.toolboxState,token);hint.textContent=token.name+' is back in the toolbox.';
+    token.group.visible=true;packTool(props.toolboxState,token);audio.play('tool');hint.textContent=token.name+' is back in the toolbox.';
   });actions.append(put);
   const take=document.createElement('button');take.textContent='Take out';on(take, 'click',()=>{
     wake(5);token.group.visible=true;
     if(token.phase==='hidden'){scene.attach(token.group);token.group.position.copy(props.toolbox.localToWorld(new THREE.Vector3(0,.7,0)));}
-    pickUpTool(props.toolboxState,scene,token);token.phase='flying';token.bounces=0;token.velocity.set(.8,1,.3);hint.textContent=token.name+' is out of the box.';
+    pickUpTool(props.toolboxState,scene,token);audio.play('tool');token.phase='flying';token.bounces=0;token.velocity.set(.8,1,.3);hint.textContent=token.name+' is out of the box.';
   });actions.append(take);
 }
 function showContact(){
@@ -315,38 +319,24 @@ function showContact(){
   heading.focus({preventScroll:true});history.replaceState(null,'','#contact');
 }
 function turnNotebook(){
-  bookTarget=1;clearTimeout(bookTimer);bookTimer=setTimeout(showContact,reduced.matches?0:450);
-}
-async function quack() {
-  if (!soundEnabled) return;
-  try {
-    audio ??= new (window.AudioContext || window.webkitAudioContext)();
-    await audio.resume();
-    const time=audio.currentTime;
-    for (let i=0;i<2;i++) {
-      const oscillator=audio.createOscillator(), filter=audio.createBiquadFilter(), gain=audio.createGain(), start=time+i*.13;
-      oscillator.type='sawtooth';oscillator.frequency.setValueAtTime(430-i*35,start);oscillator.frequency.exponentialRampToValueAtTime(230,start+.13);
-      filter.type='bandpass';filter.frequency.value=1050;filter.Q.value=2.2;
-      gain.gain.setValueAtTime(.001,start);gain.gain.exponentialRampToValueAtTime(.09,start+.02);gain.gain.exponentialRampToValueAtTime(.001,start+.15);
-      oscillator.connect(filter);filter.connect(gain);gain.connect(audio.destination);oscillator.start(start);oscillator.stop(start+.17);
-      oscillator.onended=()=>{oscillator.disconnect();filter.disconnect();gain.disconnect();};
-    }
-  } catch { hint.textContent='Quack! Sound isn’t available in this browser right now.'; }
+  audio.play('paper');bookTarget=1;clearTimeout(bookTimer);bookTimer=setTimeout(showContact,reduced.matches?0:450);
 }
 function activate(id,part) {
   if (!stories[id]) return;
   showStory(id);
+  const cue = {portal:'portal',server:'boot',laptop:'boot',desktop:'boot',headset:'headset',toolbox:'toolbox',chair:'cloth'}[id];
+  if(cue) audio.play(cue);
   if(id==='portal'){if(portalOpen){window.open('https://www.wintor.com/','_blank','noopener,noreferrer');hint.textContent='Through the portal to Wintor.';}else{portalOpen=true;hint.textContent='The portal is open. Click again to visit Wintor.';}}
   if(id==='server'){serverBoot=elapsed;hint.textContent='Power on. One light, then the rest. Click again to restart.';}
   if(id==='laptop'){laptopBoot=elapsed;hint.textContent='The laptop wakes up. Click it again to restart.';}
   if(id==='desktop'){desktopBoot=elapsed;hint.textContent='The desktop boots up. The monitor and tower come to life.';}
   if(id==='book'){turnNotebook();hint.textContent='Turn the page. Let’s get in touch.';}
-  if(id==='duck'){props.duckAt=elapsed;quack();hint.textContent=soundEnabled?'Quack. Ready to listen.':'A quiet quack. Sound is muted.';}
+  if(id==='duck'){props.duckAt=elapsed;audio.play('duck').then(played=>{if(!played&&soundEnabled&&!disposed&&selected==='duck')hint.textContent='The duck is ready to listen. Audio is unavailable right now.';});hint.textContent=soundEnabled?'Quack. Ready to listen.':'A quiet quack. Sound is muted.';}
   if(id==='headset'){props.glitchAt=elapsed;hint.textContent='Reality slipped for a moment.';}
   if(id==='chair'){props.chairAt=elapsed;hint.textContent='A little spin. Make yourself at home.';}
   if(id==='toolbox'){spillTools(props,elapsed);hint.textContent=props.toolboxOpen?'A little overpacked. Here come the tools.':'Tools packed away. Ready for another surprise.';}
-  if(id==='phone'||id==='tablet'){const on=toggleDevice(props,id);hint.textContent=`${id==='phone'?'Phone':'Tablet'} screen ${on?'on':'off'}.`;}
-  if(id==='plant'||id==='plant2')hint.textContent=plantAction(props,id,part==='pot'?'pot':'foliage');
+  if(id==='phone'||id==='tablet'){const on=toggleDevice(props,id);audio.play(on?'on':'off');hint.textContent=`${id==='phone'?'Phone':'Tablet'} screen ${on?'on':'off'}.`;}
+  if(id==='plant'||id==='plant2'){audio.play(part==='pot'?'grow':'leaf');hint.textContent=plantAction(props,id,part==='pot'?'pot':'foliage');}
   const actions=document.querySelector('#story-actions');
   const button=(label,handler)=>{
     const b=document.createElement('button');b.textContent=label;
@@ -372,7 +362,6 @@ function resetProps() {
   props.devices.forEach(d=>d.on=false);props.tokens.forEach(t=>{t.phase='hidden';t.group.visible=false;});props.toolbox.rotation.z=0;
   props.plants.forEach(p=>p.leaves.forEach(l=>{l.phase='alive';l.progress=0;l.mesh.position.copy(l.home);l.mesh.rotation.copy(l.rotation);l.mesh.material.color.copy(l.color);l.mesh.scale.set(.14,.028,.32);l.stem.visible=true;}));
 }
-function updateCount() { document.querySelector('#count').textContent = `${[...objects.values()].filter(o => o.discovered).length} / ${objects.size} discovered`; }
 function pick(event) {
   const rect = renderer.domElement.getBoundingClientRect(); pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1); ray.setFromCamera(pointer, camera);
   for (const hit of ray.intersectObjects([...objects.values()].map(o => o.group).concat(props.tokens.filter(t=>t.group.visible).map(t=>t.group)), true)) {
@@ -402,7 +391,7 @@ function setHover(found,event){
 try {
   renderer = new THREE.WebGLRenderer({ antialias: !compact, powerPreference: 'low-power' }); renderer.setPixelRatio(Math.min(devicePixelRatio, compact ? 1 : 1.5)); renderer.info.autoReset = false; renderer.shadowMap.enabled = true; renderer.shadowMap.autoUpdate = false; renderer.shadowMap.needsUpdate = true; renderer.shadowMap.type = THREE.PCFShadowMap; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
   renderer.domElement.setAttribute('aria-label', 'Interactive exhibition room. Use the object list below for keyboard exploration.'); renderer.domElement.setAttribute('role', 'img');
-  host.replaceChildren(renderer.domElement); build(); batchRigidMeshes();
+  host.replaceChildren(renderer.domElement); build(); batchRigidMeshes(); audio.prepare();
   composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene,camera));
   if (!compact) composer.addPass(new UnrealBloomPass(new THREE.Vector2(800,500),.32,.4,1.8));
   glitchPass = new ShaderPass({ uniforms: { tDiffuse: { value:null }, amount:{value:0}, time:{value:0} }, vertexShader:'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}', fragmentShader:'uniform sampler2D tDiffuse; uniform float amount; uniform float time; varying vec2 vUv; void main(){ float band=step(.76,sin(vUv.y*66.0+time*11.0));vec2 uv=vUv+vec2(sin(vUv.y*92.0+time*7.0)*amount*band,0.0);float r=texture2D(tDiffuse,uv+vec2(amount*.6,0.0)).r;float g=texture2D(tDiffuse,uv).g;float b=texture2D(tDiffuse,uv-vec2(amount*.6,0.0)).b;gl_FragColor=vec4(r,g,b,1.0);}' });
@@ -434,7 +423,7 @@ try {
     wake(5);
     const found=pick(event);pointerStart={x:event.clientX,y:event.clientY,found};
     if(found?.token && (event.pointerType !== 'touch' || host.dataset.dragMode === 'true')){
-      heldTool=found.token;pickUpTool(props.toolboxState,scene,heldTool);showTool(heldTool);
+      heldTool=found.token;pickUpTool(props.toolboxState,scene,heldTool);audio.play('tool');showTool(heldTool);
       toolDragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(new THREE.Vector3()),heldTool.group.position);
       floorPoint(event);ray.ray.intersectPlane(toolDragPlane,toolDragPoint);toolDragOffset.copy(heldTool.group.position).sub(toolDragPoint);toolDragOffset.y+=.08;
       props.toolboxState.dropHint=true;canvas.setPointerCapture(event.pointerId);host.style.cursor='grabbing';tooltip.hidden=true;hint.textContent='Drop the tool over an open tray to put it back.';return;
@@ -442,7 +431,7 @@ try {
     if(found?.id==='carpet'&&!found.secret && (event.pointerType !== 'touch' || host.dataset.dragMode === 'true')){
       if(!floorPoint(event))return;
       dragOffset.copy(found.hit.point).sub(dragPoint);dragOffset.y=0;
-      grabCloth(clothSim,found.hit.point);dragging=true;showStory('carpet');
+      audio.play('cloth');grabCloth(clothSim,found.hit.point);dragging=true;showStory('carpet');
       canvas.setPointerCapture(event.pointerId);host.style.cursor='grabbing';tooltip.hidden=true;
     }
   });
@@ -513,18 +502,15 @@ try {
     if(elapsed-lastRevealCheck>.15){
       lastRevealCheck=elapsed;
       const visible=!clothCovers(clothSim,gameIcon.getWorldPosition(new THREE.Vector3()));
-      if(visible&&!objects.get('community').discovered){objects.get('community').discovered=true;updateCount();hint.textContent='GGJG — a keepsake from a past chapter.';}
+      if(visible&&!objects.get('community').discovered){objects.get('community').discovered=true;hint.textContent='GGJG — a keepsake from a past chapter.';}
       if(!hiddenFound&&projectIcons.some(p=>!clothCovers(clothSim,p.group.getWorldPosition(new THREE.Vector3())))){hiddenFound=true;hint.textContent='A few older projects were hiding underneath. Select an icon to explore.';}
     }
     // Shadows only update during bounded activity, never in an idle loop.
     renderer.shadowMap.needsUpdate = true;
     renderer.info.reset(); composer.render();
-    host.dataset.frames = String(Number(host.dataset.frames || 0) + 1);
-    host.dataset.drawCalls = String(renderer.info.render.calls);
 
   }, { fps: compact ? 24 : 30 });
   wake = seconds => { if (!disposed) { if (!loop.running) previous = performance.now(); loop.wake(seconds); } };
-  host.dataset.quality = compact ? 'compact' : 'full';
   loop.setActive(!document.hidden); wake(1);
 } catch (error) {
   console.error('Room could not open:', error);
@@ -532,12 +518,12 @@ try {
 }
 document.querySelectorAll('[data-object]').forEach(button => on(button, 'click', () => { activate(button.dataset.object,button.dataset.part); document.querySelector('#story-title').focus(); }));
 on(document.querySelector('#contact-trigger'), 'click',event=>{event.preventDefault();showContact();});
-on(document.querySelector('#reveal-all'), 'click', () => { wake(5); objects.forEach(o => o.discovered = true); portalOpen=true; serverBoot=laptopBoot=desktopBoot=elapsed; document.querySelector('#reset').hidden = false; hint.textContent = 'The room, revealed. Move over the objects. Try moving the carpet.'; updateCount(); });
-on(document.querySelector('#reset'), 'click', () => { wake(2); clearTimeout(bookTimer);objects.forEach(o => o.discovered = ['shosho', 'wintor'].includes(o.id)); portalOpen=false;serverBoot=laptopBoot=desktopBoot=-Infinity;resetProps();resetCloth(clothSim);selected = null; hovered = null; bookTarget = 0; hiddenFound = false; tooltip.hidden = true; document.querySelector('#reset').hidden = true; document.querySelector('#story-title').textContent = 'A few objects. A few stories.'; document.querySelector('#story-text').textContent = 'A room for my work, where I come from, and the things that keep me curious.'; document.querySelector('#story-actions').replaceChildren(); hint.textContent = 'Some things are waiting to be discovered. Choose an object.'; updateCount(); document.querySelector('#story-title').focus(); });
+on(document.querySelector('#reset'), 'click', () => { wake(2); clearTimeout(bookTimer);objects.forEach(o => o.discovered = ['shosho', 'wintor'].includes(o.id)); portalOpen=false;serverBoot=laptopBoot=desktopBoot=-Infinity;resetProps();resetCloth(clothSim);selected = null; hovered = null; bookTarget = 0; hiddenFound = false; tooltip.hidden = true; document.querySelector('#reset').hidden = true; document.querySelector('#story-title').textContent = 'A few objects. A few stories.'; document.querySelector('#story-text').textContent = 'A room for my work, where I come from, and the things that keep me curious.'; document.querySelector('#story-actions').replaceChildren(); hint.textContent = 'Choose an object to begin again.'; document.querySelector('#room-story').hidden=true; document.querySelector('#room-controls summary').focus(); });
 
-on(document.querySelector('#sound'), 'click',event=>{soundEnabled=!soundEnabled;event.currentTarget.textContent=soundEnabled?'Sound on':'Sound off';event.currentTarget.setAttribute('aria-pressed',String(soundEnabled));if(!soundEnabled&&audio)audio.suspend();});
+on(document.querySelector('#sound'), 'click',event=>{soundEnabled=!soundEnabled;event.currentTarget.textContent=soundEnabled?'Sound on':'Sound off';event.currentTarget.setAttribute('aria-pressed',String(soundEnabled));audio.setEnabled(soundEnabled);});
 
 function showProject(key) {
+  document.querySelector('#room-story').hidden=false;
   const project = projectIcons.find(item => item.key === key);
   if (!project) return;
   document.querySelector('#story-title').textContent = project.title;

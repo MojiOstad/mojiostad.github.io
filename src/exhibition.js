@@ -18,7 +18,7 @@ function showFallback() {
   host.querySelector('#room-status').textContent = 'The interactive room is unavailable. Every story is still here to read.';
   host.setAttribute('aria-busy', 'false'); host.dataset.state = 'fallback';
   settings.hidden = story.hidden = controls.hidden = true;
-  fallback.open = true;
+  fallback.hidden = false;
   document.querySelector('#hint').textContent = 'Read the stories, browse selected work, or get in touch below.';
 }
 async function openRoom() {
@@ -31,7 +31,8 @@ async function openRoom() {
     if (left) return;
     const focused = document.activeElement === enter;
     room = mountRoom({ onFailure: showFallback });
-    settings.hidden = story.hidden = controls.hidden = false;
+    settings.hidden = controls.hidden = false;
+    story.hidden = true; fallback.hidden = true;
     host.dataset.state = 'ready'; host.setAttribute('aria-busy', 'false');
     document.querySelector('#hint').textContent = matchMedia('(pointer: coarse)').matches
       ? 'Tap an object to discover it. Enable “Move objects” to drag; keep it off to scroll.'
@@ -41,7 +42,7 @@ async function openRoom() {
   loading = false;
 }
 enter.addEventListener('click', openRoom);
-if (textOnly) fallback.open = true;
+if (textOnly) fallback.hidden = false;
 if (!deliberateStart) {
   const observer = new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) return;
