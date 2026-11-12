@@ -7,9 +7,9 @@ Potential clients and collaborators evaluating Moji Ostad’s development and ex
 ## Product Purpose
 Show interactive experiences and the systems behind them; help visitors explore work and make contact.
 ## Positioning
-Unity developer and experience designer at Wintor, expanding in early 2026 into backend, web development, production analytics and support. Ongoing Shosho collaboration and AI exploration.
+Unity developer and experience designer at Wintor, expanding in early 2026 into backend, web development, production analytics and support. Shosho is a current work affiliation; AI-assisted workflows and local museum AI remain ongoing exploration.
 ## Brand Commitments
-Minimal, dark and restrained; playful on interaction. Real project evidence. English. Company spelling: Shosho.
+A tactile museum exhibition room, dark and restrained around the scene, with playful object discovery. Keep Moji’s name and current Wintor role visible before exploration. Persian origin and past GGJG involvement are personal stories, not current employment claims. Real project evidence. English. Company spelling: Shosho.
 ## Capabilities and Constraints
 Static GitHub Pages site, semantic HTML/CSS/JavaScript, Vite and lazy-loaded Three.js. Accessible without JavaScript or WebGL. No tracking. Local AI for museums is ongoing exploration, not a deployed product claim.
 ## Evidence on Hand

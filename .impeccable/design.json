@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-12T13:28:19.359603+00:00",
+  "title": "Design System: Moji Ostad \u2014 Exhibition Room",
+  "extensions": {
+    "colorMeta": {
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Charcoal",
+        "tonalRamp": [
+          "oklch(15% 0.0042 84.59)",
+          "oklch(26% 0.0042 84.59)",
+          "oklch(38% 0.0042 84.59)",
+          "oklch(49% 0.0042 84.59)",
+          "oklch(61% 0.0042 84.59)",
+          "oklch(72% 0.0042 84.59)",
+          "oklch(84% 0.0042 84.59)",
+          "oklch(95% 0.0042 84.59)"
+        ]
+      },
+      "stage": {
+        "role": "neutral",
+        "displayName": "Stage",
+        "tonalRamp": [
+          "oklch(15% 0.0080 84.59)",
+          "oklch(26% 0.0080 84.59)",
+          "oklch(38% 0.0080 84.59)",
+          "oklch(49% 0.0080 84.59)",
+          "oklch(61% 0.0080 84.59)",
+          "oklch(72% 0.0080 84.59)",
+          "oklch(84% 0.0080 84.59)",
+          "oklch(95% 0.0080 84.59)"
+        ]
+      },
+      "ivory": {
+        "role": "neutral",
+        "displayName": "Ivory",
+        "tonalRamp": [
+          "oklch(15% 0.0223 80.68)",
+          "oklch(26% 0.0223 80.68)",
+          "oklch(38% 0.0223 80.68)",
+          "oklch(49% 0.0223 80.68)",
+          "oklch(61% 0.0223 80.68)",
+          "oklch(72% 0.0223 80.68)",
+          "oklch(84% 0.0223 80.68)",
+          "oklch(95% 0.0223 80.68)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0203 80.10)",
+          "oklch(26% 0.0203 80.10)",
+          "oklch(38% 0.0203 80.10)",
+          "oklch(49% 0.0203 80.10)",
+          "oklch(61% 0.0203 80.10)",
+          "oklch(72% 0.0203 80.10)",
+          "oklch(84% 0.0203 80.10)",
+          "oklch(95% 0.0203 80.10)"
+        ]
+      },
+      "reading": {
+        "role": "neutral",
+        "displayName": "Reading",
+        "tonalRamp": [
+          "oklch(15% 0.0218 79.07)",
+          "oklch(26% 0.0218 79.07)",
+          "oklch(38% 0.0218 79.07)",
+          "oklch(49% 0.0218 79.07)",
+          "oklch(61% 0.0218 79.07)",
+          "oklch(72% 0.0218 79.07)",
+          "oklch(84% 0.0218 79.07)",
+          "oklch(95% 0.0218 79.07)"
+        ]
+      },
+      "copper": {
+        "role": "primary",
+        "displayName": "Copper",
+        "tonalRamp": [
+          "oklch(15% 0.1036 45.55)",
+          "oklch(26% 0.1036 45.55)",
+          "oklch(38% 0.1036 45.55)",
+          "oklch(49% 0.1036 45.55)",
+          "oklch(61% 0.1036 45.55)",
+          "oklch(72% 0.1036 45.55)",
+          "oklch(84% 0.1036 45.55)",
+          "oklch(95% 0.1036 45.55)"
+        ]
+      },
+      "focus-blue": {
+        "role": "primary",
+        "displayName": "Focus Blue",
+        "tonalRamp": [
+          "oklch(15% 0.0536 237.13)",
+          "oklch(26% 0.0536 237.13)",
+          "oklch(38% 0.0536 237.13)",
+          "oklch(49% 0.0536 237.13)",
+          "oklch(61% 0.0536 237.13)",
+          "oklch(72% 0.0536 237.13)",
+          "oklch(84% 0.0536 237.13)",
+          "oklch(95% 0.0536 237.13)"
+        ]
+      },
+      "hover-blue": {
+        "role": "primary",
+        "displayName": "Hover Blue",
+        "tonalRamp": [
+          "oklch(15% 0.0387 231.09)",
+          "oklch(26% 0.0387 231.09)",
+          "oklch(38% 0.0387 231.09)",
+          "oklch(49% 0.0387 231.09)",
+          "oklch(61% 0.0387 231.09)",
+          "oklch(72% 0.0387 231.09)",
+          "oklch(84% 0.0387 231.09)",
+          "oklch(95% 0.0387 231.09)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Divider",
+        "tonalRamp": [
+          "oklch(15% 0.0208 75.84)",
+          "oklch(26% 0.0208 75.84)",
+          "oklch(38% 0.0208 75.84)",
+          "oklch(49% 0.0208 75.84)",
+          "oklch(61% 0.0208 75.84)",
+          "oklch(72% 0.0208 75.84)",
+          "oklch(84% 0.0208 75.84)",
+          "oklch(95% 0.0208 75.84)"
+        ]
+      },
+      "quiet-divider": {
+        "role": "neutral",
+        "displayName": "Quiet Divider",
+        "tonalRamp": [
+          "oklch(15% 0.0125 72.39)",
+          "oklch(26% 0.0125 72.39)",
+          "oklch(38% 0.0125 72.39)",
+          "oklch(49% 0.0125 72.39)",
+          "oklch(61% 0.0125 72.39)",
+          "oklch(72% 0.0125 72.39)",
+          "oklch(84% 0.0125 72.39)",
+          "oklch(95% 0.0125 72.39)"
+        ]
+      },
+      "walnut": {
+        "role": "neutral",
+        "displayName": "Walnut",
+        "tonalRamp": [
+          "oklch(15% 0.0655 49.89)",
+          "oklch(26% 0.0655 49.89)",
+          "oklch(38% 0.0655 49.89)",
+          "oklch(49% 0.0655 49.89)",
+          "oklch(61% 0.0655 49.89)",
+          "oklch(72% 0.0655 49.89)",
+          "oklch(84% 0.0655 49.89)",
+          "oklch(95% 0.0655 49.89)"
+        ]
+      },
+      "room-ivory": {
+        "role": "neutral",
+        "displayName": "Room Ivory",
+        "tonalRamp": [
+          "oklch(15% 0.0448 83.90)",
+          "oklch(26% 0.0448 83.90)",
+          "oklch(38% 0.0448 83.90)",
+          "oklch(49% 0.0448 83.90)",
+          "oklch(61% 0.0448 83.90)",
+          "oklch(72% 0.0448 83.90)",
+          "oklch(84% 0.0448 83.90)",
+          "oklch(95% 0.0448 83.90)"
+        ]
+      },
+      "portal-blue": {
+        "role": "primary",
+        "displayName": "Portal Blue",
+        "tonalRamp": [
+          "oklch(15% 0.0973 229.32)",
+          "oklch(26% 0.0973 229.32)",
+          "oklch(38% 0.0973 229.32)",
+          "oklch(49% 0.0973 229.32)",
+          "oklch(61% 0.0973 229.32)",
+          "oklch(72% 0.0973 229.32)",
+          "oklch(84% 0.0973 229.32)",
+          "oklch(95% 0.0973 229.32)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Name",
+        "purpose": "Immediately readable identity."
+      },
+      "body": {
+        "displayName": "Reading",
+        "purpose": "Project evidence, background and contact prose."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tooltip",
+        "value": "0 4px 15px #0004",
+        "purpose": "Small floating hover label."
+      }
+    ],
+    "motion": [
+      {
+        "name": "room-frame-budget",
+        "value": "30fps desktop / 24fps compact while awake",
+        "purpose": "Demand rendering; pauses hidden/offscreen and settles without scheduled frames."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "700px"
+      },
+      {
+        "name": "container-gutters",
+        "value": "1440px"
+      },
+      {
+        "name": "wide-header",
+        "value": "1500px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Room entry button",
+      "kind": "button",
+      "description": "Room entry button from the built homepage.",
+      "html": "<button class=\"ds-enter\">Enter the interactive room</button>",
+      "css": ".ds-enter{font-family:Manrope,sans-serif;color:#eee5d6;background:none;border:1px solid #a6cce5;border-radius:3px;padding:12px 16px;font-size:13px;min-height:44px;cursor:pointer}.ds-enter:disabled{opacity:.7;cursor:wait} .ds-enter:hover{color:#bfdded} .ds-enter:focus-visible{outline:2px solid #a6cce5;outline-offset:5px}",
+      "refersTo": "room-entry-button"
+    },
+    {
+      "name": "Text action",
+      "kind": "button",
+      "description": "Text action from the built homepage.",
+      "html": "<button class=\"ds-action\" aria-pressed=\"true\">Motion on</button>",
+      "css": ".ds-action{font-family:Manrope,sans-serif;color:#eee5d6;background:none;border:0;padding:10px 0;font-size:13px;text-decoration:underline;text-underline-offset:5px;cursor:pointer} .ds-action:hover{color:#bfdded} .ds-action:focus-visible{outline:2px solid #a6cce5;outline-offset:5px}",
+      "refersTo": "text-action"
+    },
+    {
+      "name": "Introduction navigation",
+      "kind": "nav",
+      "description": "Introduction navigation from the built homepage.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main\"><a class=\"ds-nav-link\" href=\"#projects\">My work \u2197</a><a class=\"ds-nav-link\" href=\"#contact\">Get in touch \u2197</a></nav>",
+      "css": ".ds-nav{display:flex;gap:30px}.ds-nav-link{font-family:Manrope,sans-serif;color:#eee5d6;font-size:14px;padding:6px 0;text-decoration:none}@media(max-width:700px){.ds-nav{gap:25px}.ds-nav-link{display:inline-flex;align-items:center;min-height:44px;font-size:12px}} .ds-nav-link:hover{color:#bfdded} .ds-nav-link:focus-visible{outline:2px solid #a6cce5;outline-offset:5px}"
+    },
+    {
+      "name": "Story disclosure",
+      "kind": "custom",
+      "description": "Story disclosure from the built homepage.",
+      "html": "<details class=\"ds-details\"><summary class=\"ds-summary\">Explore the stories without 3D</summary><p class=\"ds-prose\">A room of stories. Explore my work and background below.</p></details>",
+      "css": ".ds-details{font-family:Manrope,sans-serif;color:#eee5d6;border-top:1px solid #39342e;padding:16px 0}.ds-summary{font-size:13px;color:#c1b8aa;cursor:pointer;width:max-content;max-width:100%}.ds-prose{font-size:13px;line-height:1.8;color:#c9c0b2;max-width:70ch} .ds-summary:hover{color:#bfdded} .ds-summary:focus-visible{outline:2px solid #a6cce5;outline-offset:5px}"
+    },
+    {
+      "name": "Contact link",
+      "kind": "custom",
+      "description": "Contact link from the built homepage.",
+      "html": "<a class=\"ds-contact\" href=\"mailto:moji.ostad@gmail.com\">moji.ostad@gmail.com <span aria-hidden=\"true\">\u2197</span></a>",
+      "css": ".ds-contact{font-family:Manrope,sans-serif;color:#eee5d6;display:inline-block;font-size:clamp(19px,2.1vw,28px);text-decoration:none;overflow-wrap:anywhere}.ds-contact span{margin-left:16px;color:#bcb4a7} .ds-contact:hover{color:#bfdded} .ds-contact:focus-visible{outline:2px solid #a6cce5;outline-offset:5px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A tactile, quietly playful museum room",
+    "overview": "A tactile, quietly playful museum room for potential clients and collaborators. Warm materials, a fixed elevated view and recognizable personal objects carry the atmosphere; the surrounding interface stays dark, readable and restrained. Interaction reveals the playfulness already approved for this world.",
+    "keyCharacteristics": [
+      "Warm charcoal and ivory framing walnut, Persian rust red and restrained blue.",
+      "Self-hosted Manrope, light headings and quiet text navigation.",
+      "Object-led discovery supported by native HTML stories, project evidence and direct contact."
+    ],
+    "rules": [],
+    "dos": [
+      "Do preserve the fixed elevated room, natural object materials and immediately readable name and Wintor role.",
+      "Do keep Shosho and Wintor visible as current connections; GGJG remains past involvement.",
+      "Do preserve keyboard and touch alternatives, visible focus, ordinary page scrolling and readable stories without 3D.",
+      "Do retain real project imagery and factual case-study links."
+    ],
+    "donts": [
+      "Don't reintroduce the rejected editorial world, physical lamps, plaques, tags or banners in the room.",
+      "Don't replace natural undiscovered-object materials with a shared dark mask.",
+      "Don't turn hover tags into persistent signage or make contact depend on the room.",
+      "Don't autoplay audio, add tracking, or imply a contact submission backend exists."
+    ]
+  }
+}
