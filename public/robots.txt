@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mojiostad.github.io/sitemap.xml
