@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore Moji Ostad’s work and stories in a small interactive exhibition room. Local design prototype.">
+  <meta name="robots" content="noindex">
+  <title>Moji Ostad — A room of stories</title>
+  <link rel="stylesheet" href="/src/room.css">
+  <script type="module" src="/src/room.js"></script>
+</head>
+<body>
+  <a class="skip" href="#object-index">Explore with the object list</a>
+  <header class="intro">
+    <div><h1>Moji Ostad<span>.</span></h1><p class="role">Developer & experience designer at Wintor.</p><p class="description">I build interactive experiences and the systems behind them.</p></div>
+    <nav aria-label="Main"><button type="button" id="work">My work <span aria-hidden="true">↗</span></button><a href="#contact" id="contact-trigger">Get in touch <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main>
+    <section class="stage" aria-label="An interactive room of personal objects">
+      <div id="scene"><p class="loading" role="status">Opening the room…</p></div>
+      <div id="tooltip" hidden></div>
+      <div class="stage-footer"><p id="hint">Some things are waiting to be discovered. Choose an object.</p><div class="review-controls"><button id="sound" type="button" aria-pressed="true">Sound on</button><button id="reveal-all" type="button">Reveal the room</button><button id="reset" type="button" hidden>Start again</button></div></div>
+    </section>
+    <section class="reading" aria-label="Object stories">
+      <div class="story" aria-live="polite"><p class="story-count" id="count">2 / 17 discovered</p><div><h2 id="story-title">A few objects. A few stories.</h2><p id="story-text">A room for my work, where I come from, and the things that keep me curious.</p><div id="story-actions"></div></div></div>
+      <details id="object-index"><summary>Explore without the room</summary><div class="object-list"><button data-object="portal">Portal · Experiences</button><button data-object="server">Server · Systems</button><button data-object="carpet">Carpet · Origin</button><button data-object="laptop">Laptop · Tools</button><button data-object="community">GGJG · Past involvement</button><button data-object="book">Notebook · Contact</button><button data-object="desktop">Desktop · Power on</button><button data-object="toolbox">Toolbox · Open</button><button data-object="chair">Gaming chair · Spin</button><button data-object="duck">Duck · Quack</button><button data-object="headset">VR headset · Shift reality</button><button data-object="phone">Phone · Screen on / off</button><button data-object="tablet">Tablet · Screen on / off</button><button data-object="plant" data-part="foliage">Plant · Drop a leaf</button><button data-object="plant" data-part="pot">Plant pot · Grow leaves</button><button data-object="plant2" data-part="foliage">Tall plant · Drop a leaf</button><button data-object="plant2" data-part="pot">Tall plant pot · Grow leaves</button><a href="https://www.shosho.nl/" target="_blank" rel="noopener noreferrer">Shosho ↗</a><a href="https://www.wintor.com/" target="_blank" rel="noopener noreferrer">Wintor ↗</a></div><div id="tool-list" class="object-list" role="group" aria-label="Tools"></div></details>
+    </section>
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title" tabindex="-1">Let’s make something useful.</h2>
+      <p>Have an experience, a system, or a possibility in mind? I’d like to hear about it.</p>
+      <a class="contact-email" href="mailto:moji.ostad@gmail.com">moji.ostad@gmail.com <span aria-hidden="true">↗</span></a>
+      <div class="contact-links"><a href="https://www.linkedin.com/in/mojiohz/">LinkedIn ↗</a><a href="https://github.com/MojiOstad">GitHub ↗</a></div>
+    </section>
+  </main>
+  <footer class="page-footer"><span>Local design study · objects and interactions in progress</span><a href="/">Current portfolio ↗</a></footer>
+</body>
+</html>
