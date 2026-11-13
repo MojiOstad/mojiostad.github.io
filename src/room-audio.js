@@ -1,8 +1,14 @@
 // Gesture-only audio: no ambient loop, autoplay, or third-party requests.
-export function createRoomAudio({ contextFactory = () => new (window.AudioContext || window.webkitAudioContext)(), fetchAudio = () => fetch('/audio/duck-quack.mp3').then(response => { if (!response.ok) throw new Error('Quack unavailable'); return response.arrayBuffer(); }) } = {}) {
-  let context, master, sample, bytes, enabled = true, disposed = false, generation = 0;
-  const voices = new Set(), recent = new Map();
-  function prepare() { bytes ??= fetchAudio().catch(() => null); return bytes; }
+export const DUCK_SAMPLES = ['/audio/duck-1.mp3', '/audio/duck-2.mp3', '/audio/duck-3.mp3', '/audio/duck-4.mp3'];
+export function createRoomAudio({ random = Math.random, contextFactory = () => new (window.AudioContext || window.webkitAudioContext)(), fetchAudio = url => fetch(url).then(response => { if (!response.ok) throw new Error('Quack unavailable'); return response.arrayBuffer(); }) } = {}) {
+  let context, master, enabled = true, disposed = false, generation = 0;
+  const voices = new Set(), recent = new Map(), bytes = new Map(), samples = new Map();
+  let lastDuck = -1;
+  function load(index) {
+    if (!bytes.has(index)) bytes.set(index, fetchAudio(DUCK_SAMPLES[index]).catch(() => { bytes.delete(index); return null; }));
+    return bytes.get(index);
+  }
+  function prepare() { return Promise.all(DUCK_SAMPLES.map((_, index) => load(index))); }
   function stop() { for (const voice of [...voices]) { try { voice.stop(); } catch {} } }
   function track(source, gain, end) {
     source.connect(gain); gain.connect(master); voices.add(source);
@@ -37,10 +43,15 @@ export function createRoomAudio({ contextFactory = () => new (window.AudioContex
       if (now - (recent.get(cue) ?? -Infinity) < .1 || voices.size > 12) return true;
       recent.set(cue, now);
       if (cue === 'duck') {
-        const data = await prepare();
+        // Choose among all other recordings, so adjacent taps never repeat.
+        const poolSize = DUCK_SAMPLES.length - (lastDuck < 0 ? 0 : 1);
+        const choice = Math.min(poolSize - 1, Math.floor(Math.max(0, random()) * poolSize));
+        const index = lastDuck >= 0 && choice >= lastDuck ? choice + 1 : choice;
+        lastDuck = index;
+        const data = await load(index);
         if (!data) throw new Error('Quack unavailable');
-        sample ??= context.decodeAudioData(data.slice(0));
-        const buffer = await sample;
+        if (!samples.has(index)) samples.set(index, context.decodeAudioData(data.slice(0)).catch(error => { samples.delete(index); throw error; }));
+        const buffer = await samples.get(index);
         if (!enabled || disposed || request !== generation) return false;
         const source = context.createBufferSource(), gain = context.createGain();
         source.buffer = buffer; gain.gain.value = .8; track(source, gain);

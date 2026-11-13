@@ -33,3 +33,11 @@ Graphics use bounded demand rendering and pause offscreen or in a hidden tab. De
 No low-end physical device frame-time or power profiling was performed. Full screen-reader certification and native touch drag testing on real iOS/Android devices remain outside the desktop-browser checks. The cloth remains an approximate bounded simulation. A full-page WebGL screenshot can lose the canvas image when its compositor surface is offscreen; the separate desktop hero and mobile captures show the scene. No runtime blank-room failure was established.
 
 Room artwork provenance remains in `docs/room-assets.md`. The loading/social poster is a crop of the approved prototype screenshot, not new client photography. No new tools or client-impact metrics were inferred.
+
+## Scroll entrance and recorded duck update — 13 November 2026
+
+Opening: centered name, title and role, with quiet scroll/skip links. The identity docks during the first part of a natural 150vh desktop / 120vh compact scroll sequence. The room fades in, rotates through a shallow 18-degree camera path and grows from zoom .55 to exactly the incumbent view at (8,8,14), zoom1. Scrolling upward reverses the sequence. Room interaction waits for completion. Skip computes the actual end position and focuses the canvas. Reduced-motion and story-only views bypass the sequence; save-data retains deliberate scene loading. No wheel or touch scrolling is intercepted.
+
+Four short excerpts from the CC0 field recording ducks1.wav replace the cartoon quack. Each tap selects a random cue other than the preceding one. The mute, pending-playback cancellation and audio resource lifecycle remain intact. Provenance and edit details are in room-assets.md.
+
+Validation: 12 unit/regression tests; production build; five-page link/metadata and audio-asset checks; desktop and mobile opening/resting views, skip to progress1 with canvas focus, reverse to progress0, story-only view and duck playback without browser errors. Independent finish review passed after resolving mobile hint selection and terminal failure fallback guards. Failure recovery and full assistive-technology behavior were reviewed in source; low-end physical device profiling remains unperformed. The design detector reported advisory inherited type/palette documentation gaps, not new material visual findings.

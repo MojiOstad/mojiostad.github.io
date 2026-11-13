@@ -1,3 +1,4 @@
+import { arrivalCamera } from './arrival-state.js';
 import { createRoomAudio } from './room-audio.js';
 import * as THREE from 'three';
 import { createRoomProps, updateRoomProps, plantAction, toggleDevice, spillTools } from './room-props.js';
@@ -14,7 +15,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { createRoomLoop } from './room-loop.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
-export function mountRoom({ onFailure = () => {} } = {}) {
+export function mountRoom({ onFailure = () => {}, entranceProgress = 1 } = {}) {
 const host = document.querySelector('#scene');
 const hint = document.querySelector('#hint');
 const tooltip = document.querySelector('#tooltip');
@@ -25,6 +26,7 @@ const events = new AbortController();
 const on = (target, type, handler, options = {}) => target.addEventListener(type, handler, { ...options, signal: events.signal });
 let loop, resizeObserver, viewObserver, disposed = false, inView = true;
 let wake = () => {};
+let entranceAmount = entranceProgress;
 const textures = new Set(), materials = new Set();
 function dispose() {
   if (disposed) return;
@@ -363,6 +365,7 @@ function resetProps() {
   props.plants.forEach(p=>p.leaves.forEach(l=>{l.phase='alive';l.progress=0;l.mesh.position.copy(l.home);l.mesh.rotation.copy(l.rotation);l.mesh.material.color.copy(l.color);l.mesh.scale.set(.14,.028,.32);l.stem.visible=true;}));
 }
 function pick(event) {
+  if (entranceAmount < .999) return null;
   const rect = renderer.domElement.getBoundingClientRect(); pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1); ray.setFromCamera(pointer, camera);
   for (const hit of ray.intersectObjects([...objects.values()].map(o => o.group).concat(props.tokens.filter(t=>t.group.visible).map(t=>t.group)), true)) {
     let node = hit.object, secret = false, part = hit.object.userData.part;
@@ -390,7 +393,7 @@ function setHover(found,event){
 
 try {
   renderer = new THREE.WebGLRenderer({ antialias: !compact, powerPreference: 'low-power' }); renderer.setPixelRatio(Math.min(devicePixelRatio, compact ? 1 : 1.5)); renderer.info.autoReset = false; renderer.shadowMap.enabled = true; renderer.shadowMap.autoUpdate = false; renderer.shadowMap.needsUpdate = true; renderer.shadowMap.type = THREE.PCFShadowMap; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
-  renderer.domElement.setAttribute('aria-label', 'Interactive exhibition room. Use the object list below for keyboard exploration.'); renderer.domElement.setAttribute('role', 'img');
+  renderer.domElement.setAttribute('aria-label', 'Interactive exhibition room. Use the object list below for keyboard exploration.'); renderer.domElement.setAttribute('role', 'img'); renderer.domElement.tabIndex = 0;
   host.replaceChildren(renderer.domElement); build(); batchRigidMeshes(); audio.prepare();
   composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene,camera));
   if (!compact) composer.addPass(new UnrealBloomPass(new THREE.Vector2(800,500),.32,.4,1.8));
@@ -399,7 +402,7 @@ try {
   function resize() {
     const width = host.clientWidth, height = host.clientHeight, aspect = width / height;
     const vertical = Math.max(7.9, 13.2 / aspect); camera.left = -vertical * aspect / 2; camera.right = vertical * aspect / 2; camera.top = vertical / 2; camera.bottom = -vertical / 2;
-    camera.updateProjectionMatrix(); renderer.setSize(width, height); composer.setSize(width,height); renderer.shadowMap.needsUpdate = true; wake(.3);
+    applyEntranceCamera(); renderer.setSize(width, height); composer.setSize(width,height); renderer.shadowMap.needsUpdate = true; wake(.3);
   }
   resizeObserver = new ResizeObserver(resize); resizeObserver.observe(host); resize();
   const canvas = renderer.domElement;
@@ -556,5 +559,19 @@ on(document, 'keydown', event => {
   if (heldTool) { dropTool(props.toolboxState, heldTool, null); heldTool = null; props.toolboxState.dropHint = false; }
   dragging = false; releaseCloth(clothSim); wake(4);
 });
-return { dispose };
+function applyEntranceCamera() {
+  if (!camera) return;
+  const view = arrivalCamera(entranceAmount);
+  camera.position.set(view.x, view.y, view.z); camera.zoom = view.zoom;
+  camera.lookAt(0, 1, 0); camera.updateProjectionMatrix();
+}
+return { dispose, setEntranceProgress(value) {
+  entranceAmount = Math.max(0, Math.min(1, value));
+  if (entranceAmount < .999 && (heldTool || dragging)) {
+    if (heldTool) { dropTool(props.toolboxState,heldTool,null); heldTool=null; props.toolboxState.dropHint=false; }
+    if (dragging) releaseCloth(clothSim);
+    dragging=false;pointerStart=null;host.style.cursor='default';
+  }
+  applyEntranceCamera(); wake(.08);
+} };
 }

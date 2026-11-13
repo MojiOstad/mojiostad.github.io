@@ -66,7 +66,7 @@ components:
 
 **Creative North Star: "A tactile, quietly playful museum room"**
 
-A tactile, quietly playful museum room for potential clients and collaborators. Warm materials, a fixed elevated view and recognizable personal objects carry the atmosphere; the surrounding interface stays dark, readable and restrained. Interaction reveals the playfulness already approved for this world.
+A tactile, quietly playful museum room for potential clients and collaborators. Warm materials, an elevated resting view and recognizable personal objects carry the atmosphere; the surrounding interface stays dark, readable and restrained. Interaction reveals the playfulness already approved for this world.
 
 This records the built homepage candidate on `codex/exhibition-room-production`, replacing the former prototype-only design record. The original prototype branch and checkout remain intact; `/room/` is excluded from the production build. The handoff remains historical context, while `index.html`, `src/room.css`, `src/exhibition.js`, `src/exhibition-room.js` and `src/room-loop.js` describe the production implementation.
 
@@ -97,13 +97,13 @@ The header is capped at (1440px), the stage at (1560px), and reading, work and c
 
 At (700px) and below, the header stacks, the stage becomes (360px), project evidence and about content become single-column, and story controls wrap across the available width. The room remains a contained whole rather than a cropped close-up. Stories use two columns on wider screens and one on compact screens. Thin top dividers and generous vertical space organize the reading sequence.
 
-Deliberate entry applies to narrow screens, coarse pointers, reduced motion and save-data. `?view=stories` opens the native story index without automatically mounting the room. Desktop entry otherwise waits for viewport proximity and an idle opportunity. Normal canvas interaction permits vertical page scrolling; “Move objects” explicitly enables dragging on touch. Keep the (44px) compact control targets and wrapping contact links.
+The opening centers the name, title and role alone. Natural scrolling over 150vh on desktop or 120vh on compact screens docks those same text elements into the existing header and brings the room forward. The camera starts at 55% zoom with an 18-degree turn and a slightly higher view, then ends exactly at the incumbent (8, 8, 14), zoom 1. The transition reverses with scroll; object interaction begins only at completion. A skip link goes directly to that measured resting position and focuses the room. Reduced motion and `?view=stories` bypass this entrance. Reduced motion, story-only and save-data retain deliberate 3D entry; other visitors load the lazy scene after beginning the scroll or choosing the skip link. Normal canvas interaction permits vertical page scrolling; “Move objects” explicitly enables dragging on touch. Keep the (44px) compact control targets and wrapping contact links.
 
 ## Elevation & Depth
 
 Depth belongs primarily to the room: modeled thickness, woven carpet and fringe, natural resting angles, warm fill, contact shadows and bounded neon. The portal faces the visitor. HTML stays flat; only the ivory hover tooltip has a small shadow (`0 4px 15px #0004`). The entry overlay uses a translucent charcoal ground.
 
-Desktop rendering caps DPR at (1.5) with bloom; compact rendering caps DPR at (1) without bloom. The lazy room uses demand rendering, bounded at (30fps) desktop and (24fps) compact while awake, pauses when hidden or offscreen, and leaves no scheduled frame once settled. Preserve reduced-motion responses, the explicit motion control and interaction-only sound.
+Desktop rendering caps DPR at (1.5) with bloom; compact rendering caps DPR at (1) without bloom. The lazy room uses demand rendering, bounded at (30fps) desktop and (24fps) compact while awake, pauses when hidden or offscreen, and leaves no scheduled frame once settled. Preserve reduced-motion responses, the explicit motion control and interaction-only sound. Duck taps choose from four locally served real field-recorded cues, excluding the previous choice. Muting cancels active and pending playback. The room fallback remains stable after a failed load; later scroll frames do not retry it.
 
 ## Shapes
 

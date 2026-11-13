@@ -33,3 +33,5 @@ for (const asset of ['ggjg.png', 'unity.png', 'shosho.png', 'wintor.png', 'glass
 for (const text of ['I’m from Iran', 'Global Game Jam Groningen', 'Azure', 'ongoing development', 'Glass Garden', 'Northern Farm', 'Tactics']) if (!home.includes(text)) errors.push(`Missing readable fallback: ${text}`);
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
 console.log(`Verified ${pages.length} production pages: metadata, links, assets, contact and legacy anchors, readable stories, and lazy 3D entry.`);
+
+for (let i = 1; i <= 4; i++) if (!existsSync(`dist/audio/duck-${i}.mp3`)) { console.error(`Missing recorded duck cue ${i}`); process.exit(1); }

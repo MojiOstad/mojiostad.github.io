@@ -209,6 +209,10 @@
         "name": "room-frame-budget",
         "value": "30fps desktop / 24fps compact while awake",
         "purpose": "Demand rendering; pauses hidden/offscreen and settles without scheduled frames."
+      },
+      {
+        "name": "scroll-arrival",
+        "description": "Centered identity docks into existing header over 150vh desktop / 120vh compact. Camera zoom .55 to1, bounded18degree turn, exact existing final view. Reversible natural scroll, measured skip destination, reduced-motion bypass."
       }
     ],
     "breakpoints": [
